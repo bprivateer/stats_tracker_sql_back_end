@@ -62,19 +62,21 @@ router.put('/api/activities/:id', function(req, res){
 })
 
 router.delete('/api/activities/:id', function(req, res){
-Model.Activity.findById(req.params.id)
-.then(function(data){
-  Model.Activity.destroy({
-    where: {id: req.params.id}
-  })
+  Model.Stats.destroy({where: {activityId: req.params.id}})
   .then(function(data){
-    res.json({data: data})
+    // res.json({data: data})
+      Model.Activity.destroy({
+        where: {id: req.params.id}
+      }).then(function(data){
+        res.json({data: data})
+      })
+
   }).catch(function(err){
-    res.send("error", err)
+    res.send(err)
   })
 
 })
-})
+
 
 router.post('/api/activities/:id/stats', function(req, res){
 
